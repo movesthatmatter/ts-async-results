@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "sourceMap": true,
+    "declaration": false,
+    "declarationMap": false,
+    "module": "commonjs",
+    "downlevelIteration": true
+  },
+  "include": ["./src/**/*.ts", "./**/*.ts"],
+  "exclude": []
+}

@@ -1,0 +1,25 @@
+{
+  "name": "ts-async-results",
+  "version": "1.0.0",
+  "description": "A typescript implementation of Rust's Result object for Async. Brings compile-time error checking to typescrip.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Gabriel C. Troia",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "npm run clean && npm run tsc",
+    "clean": "rm -rf dist",
+    "test": "jest"
+  },
+  "dependencies": {
+    "conditional-type-checks": "^1.0.5",
+    "ts-results": "^3.0.0",
+    "tslib": "^2.1.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
+  }
+}

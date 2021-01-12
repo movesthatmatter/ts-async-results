@@ -1,0 +1,23 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+      "outDir": "./dist/",
+      "sourceMap": true,
+      "declaration": true,
+      "declarationMap": true,
+      "moduleResolution": "node",
+      "module": "umd",
+      "noEmitHelpers": false,
+      "skipLibCheck": true,
+      "lib": ["es2015"],
+      "strict": true,
+      "noImplicitReturns": true,
+      "baseUrl": "./",
+      "target": "es5",
+      "importHelpers": true,
+      "forceConsistentCasingInFileNames": true,
+      "experimentalDecorators": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "./dist"]
+  }
