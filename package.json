@@ -1,7 +1,7 @@
 {
   "name": "ts-async-results",
   "version": "0.1.0",
-  "description": "A typescript implementation of Rust's Result object for Async. Brings compile-time error checking to typescrip.",
+  "description": "An Async implementation of the awesome github.com/vultix/ts-results.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Gabriel C. Troia",

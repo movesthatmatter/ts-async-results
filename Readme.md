@@ -1,7 +1,7 @@
 # ts-async-results
 An Async implementation of the awesome [ts-results](github.com/vultix/ts-results).
 
-For an intro into the Result's API check out the above link or Rust's own Result[implementation](https://doc.rust-lang.org/std/result/).
+For an intro into the Result's API check out the above link or Rust's own [Result API](https://doc.rust-lang.org/std/result/).
 
 This library only addresses the Async component of the Result.
 
@@ -157,7 +157,7 @@ badResult.unwrap(); // throws Error("something went wrong")
 
 #### UnwrapOr
 
-To use `Unwrap` we make use of the fact that an AsyncResult resolves to a simple Result.
+To use `UnwrapOr` we make use of the fact that an AsyncResult resolves to a simple Result.
 
 ```typescript
 let goodAsyncResult = new AsyncOk(1);
