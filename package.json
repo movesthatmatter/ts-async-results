@@ -1,6 +1,6 @@
 {
   "name": "ts-async-results",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A typescript implementation of Rust's Result object for Async. Brings compile-time error checking to typescrip.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
