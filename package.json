@@ -10,7 +10,8 @@
   "scripts": {
     "build": "npm run clean && npm run tsc",
     "clean": "rm -rf dist",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "tsc"
   },
   "dependencies": {
     "conditional-type-checks": "^1.0.5",
