@@ -12,10 +12,10 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "npm run clean && npm run tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf dist",
     "test": "jest",
-    "prepublish": "tsc"
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "conditional-type-checks": "^1.0.5",
