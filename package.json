@@ -2,6 +2,10 @@
   "name": "ts-async-results",
   "version": "0.1.2",
   "description": "An Async implementation of the awesome github.com/vultix/ts-results.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GabrielCTroia/ts-async-results"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Gabriel C. Troia",
