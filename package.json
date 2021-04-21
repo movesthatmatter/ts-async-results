@@ -15,7 +15,7 @@
     "build": "npm run clean && tsc",
     "clean": "rm -rf dist",
     "test": "jest",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "conditional-type-checks": "^1.0.5",
