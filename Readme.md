@@ -1,5 +1,5 @@
 # ts-async-results
-An Async implementation of the awesome [ts-results](github.com/vultix/ts-results).
+An Async implementation of the awesome [ts-results](https://github.com/vultix/ts-results).
 
 For an intro into the Result's API check out the above link or Rust's own [Result API](https://doc.rust-lang.org/std/result/).
 
