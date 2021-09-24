@@ -6,7 +6,7 @@
       "declaration": true,
       "declarationMap": true,
       "moduleResolution": "node",
-      "module": "umd",
+      "module": "commonjs",
       "noEmitHelpers": false,
       "skipLibCheck": true,
       "lib": ["es2015"],

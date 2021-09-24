@@ -1,5 +1,5 @@
 import { Err, Ok } from 'ts-results';
-import { AsyncOk, AsyncErr, AsyncResultWrapper, AsyncResult } from './AsyncResultWrapper';
+import { AsyncOk, AsyncErr, AsyncResultWrapper, AsyncResult } from './index';
 import { delay, isExactType } from './util';
 
 describe('map', () => {

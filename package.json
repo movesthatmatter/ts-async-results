@@ -4,7 +4,7 @@
   "description": "An Async implementation of the awesome github.com/vultix/ts-results.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GabrielCTroia/ts-async-results"
+    "url": "https://github.com/movesthatmatter/ts-async-results"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
