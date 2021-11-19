@@ -5,6 +5,8 @@ For an intro into the Result's API check out the above link or Rust's own [Resul
 
 This library only addresses the Async component of the Result.
 
+## LOOKING FOR CONTRIBUTORS
+
 ## Contents
 
 * [Installation](#installation)
