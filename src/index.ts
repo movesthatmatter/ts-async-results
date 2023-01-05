@@ -9,7 +9,7 @@ export type AsyncResultErrors = ResolutionError;
 export class AsyncResultWrapper<T, E> {
   public readonly isAsync = true;
 
-  private readonly result: Promise<Result<T, E>>;
+  public readonly result: Promise<Result<T, E>>;
 
   constructor(
     result:
@@ -73,7 +73,7 @@ export class AsyncResultWrapper<T, E> {
 
       const newRes = mapper(r.val);
 
-      if (newRes instanceof AsyncResultWrapper) {
+      if (AsyncResult.isAsyncResult(newRes)) {
         return newRes.result;
       }
 
@@ -149,7 +149,17 @@ export namespace AsyncResult {
     };
   }
 
+  function isObject(item: unknown): item is Object {
+    return typeof item === 'object' && !Array.isArray(item) && item !== null;
+  }
+
+  // Use this to get inherited keys as well
+  const keyInObject = <X extends {}, Y extends PropertyKey>(
+    obj: X,
+    prop: Y
+  ): obj is X & Record<Y, unknown> => prop in obj;
+
   export function isAsyncResult<T, E>(t: unknown): t is AsyncResult<T, E> {
-    return t instanceof AsyncResultWrapper;
+    return isObject(t) && keyInObject(t, 'isAsync') && t.isAsync === true;
   }
 }
