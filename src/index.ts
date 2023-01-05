@@ -20,8 +20,7 @@ export class AsyncResultWrapper<T, E> {
   ) {
     this.result = Promise.resolve(
       typeof result === 'function' ? result() : result
-    ) // A Promise without a catch statement throws an error nowadays and doesn't resolve
-      .catch(() => new Err(resolutionError) as any);
+    );
   }
 
   resolve(): Promise<Result<T, E>> {
