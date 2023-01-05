@@ -9,17 +9,18 @@ export type AsyncResultErrors = ResolutionError;
 export class AsyncResultWrapper<T, E> {
   public readonly isAsync = true;
 
-  private readonly result!: Promise<Result<T, E>>;
+  private readonly result: Promise<Result<T, E>>;
 
   constructor(
     result:
       | Result<T, E>
-      | Promise<Result<T, E>> 
+      | Promise<Result<T, E>>
       | (() => Promise<Result<T, E>>)
-      | (() => Result<T, E>
-    )
+      | (() => Result<T, E>)
   ) {
-    this.result = Promise.resolve(typeof result === 'function' ? result() : result);
+    this.result = Promise.resolve(
+      typeof result === 'function' ? result() : result
+    );
   }
 
   resolve(): Promise<Result<T, E>> {
@@ -27,16 +28,16 @@ export class AsyncResultWrapper<T, E> {
   }
 
   map<T2>(mapper: (val: T) => T2): AsyncResultWrapper<T2, E> {
-    const mapped: Promise<Result<T2, E>> = this.result.then(
-      (r) => (r.ok ? new Ok(mapper(r.val)) : r)
+    const mapped: Promise<Result<T2, E>> = this.result.then((r) =>
+      r.ok ? new Ok(mapper(r.val)) : r
     );
 
     return new AsyncResultWrapper(traceAsyncErrors(() => mapped));
   }
 
   mapErr<E2>(mapper: (val: E) => E2): AsyncResultWrapper<T, E2> {
-    const mapped: Promise<Result<T, E2>> = this.result.then(
-      (r) => (r.ok ? r : new Err(mapper(r.val)))
+    const mapped: Promise<Result<T, E2>> = this.result.then((r) =>
+      r.ok ? r : new Err(mapper(r.val))
     );
 
     return new AsyncResultWrapper(traceAsyncErrors(() => mapped));
@@ -45,21 +46,19 @@ export class AsyncResultWrapper<T, E> {
   flatMap<T2, E2>(
     mapper: (val: T) => Result<T2, E2> | AsyncResultWrapper<T2, E | E2>
   ): AsyncResultWrapper<T2, E | E2> {
-    const mapped: Promise<Result<T2, E | E2>> = this.result.then(
-      (r) => {
-        if (!r.ok) {
-          return r;
-        }
-
-        const newRes = mapper(r.val);
-
-        if (newRes instanceof AsyncResultWrapper) {
-          return newRes.result;
-        }
-
-        return newRes;
+    const mapped: Promise<Result<T2, E | E2>> = this.result.then((r) => {
+      if (!r.ok) {
+        return r;
       }
-    );
+
+      const newRes = mapper(r.val);
+
+      if (newRes instanceof AsyncResultWrapper) {
+        return newRes.result;
+      }
+
+      return newRes;
+    });
 
     return new AsyncResultWrapper(traceAsyncErrors(() => mapped));
   }
@@ -67,21 +66,19 @@ export class AsyncResultWrapper<T, E> {
   flatMapErr<T2, E2>(
     mapper: (val: E) => Result<T2, E2> | AsyncResultWrapper<T2, E2>
   ): AsyncResultWrapper<T | T2, E2> {
-    const mapped: Promise<Result<T | T2, E2>> = this.result.then(
-      (r) => {
-        if (r.ok) {
-          return r;
-        }
-
-        const newRes = mapper(r.val);
-
-        if (newRes instanceof AsyncResultWrapper) {
-          return newRes.result;
-        }
-
-        return newRes;
+    const mapped: Promise<Result<T | T2, E2>> = this.result.then((r) => {
+      if (r.ok) {
+        return r;
       }
-    );
+
+      const newRes = mapper(r.val);
+
+      if (newRes instanceof AsyncResultWrapper) {
+        return newRes.result;
+      }
+
+      return newRes;
+    });
 
     return new AsyncResultWrapper(traceAsyncErrors(() => mapped));
   }
@@ -92,9 +89,9 @@ export class AsyncOk<T> extends AsyncResultWrapper<T, never> {
 
   constructor(resolver: T | Promise<T>) {
     super(
-      Promise.resolve(resolver).then(
-        (val) => new Ok(val)
-      )
+      Promise.resolve(resolver)
+        .then((val) => new Ok(val))
+        .catch(() => new Err(resolutionError) as any)
     );
   }
 }
@@ -103,25 +100,16 @@ export class AsyncErr<E> extends AsyncResultWrapper<never, E> {
   static readonly EMPTY = new AsyncErr<void>(undefined);
 
   constructor(resolver: E | Promise<E>) {
-    super(
-      Promise.resolve(resolver).then(
-        (val) => new Err(val)
-      )
-    );
+    super(Promise.resolve(resolver).then((val) => new Err(val)));
   }
 }
 
 export type AsyncResult<T, E> = AsyncResultWrapper<T, E>;
 
-export type AsyncResultOkType<T extends AsyncResult<any, any>> = T extends AsyncResult<infer U, any>
-  ? U
-  : never;
-export type AsyncResultErrType<T extends AsyncResult<any, any>> = T extends AsyncResult<
-  any,
-  infer U
->
-  ? U
-  : never;
+export type AsyncResultOkType<T extends AsyncResult<any, any>> =
+  T extends AsyncResult<infer U, any> ? U : never;
+export type AsyncResultErrType<T extends AsyncResult<any, any>> =
+  T extends AsyncResult<any, infer U> ? U : never;
 
 export type AsyncResultOkTypes<T extends AsyncResult<any, any>[]> = {
   [key in keyof T]: T[key] extends AsyncResult<infer U, any> ? U : never;
@@ -162,7 +150,7 @@ export namespace AsyncResult {
     return (item: T) => {
       fn(item);
       return item;
-    }
+    };
   }
 
   export function isAsyncResult<T, E>(t: unknown): t is AsyncResult<T, E> {

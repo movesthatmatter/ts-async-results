@@ -256,7 +256,7 @@ describe('flatMapErr', () => {
 
     const spy = jest.fn();
 
-    res.flatMapErr(spy)
+    res.flatMapErr(spy);
 
     await delay();
     expect(spy).toHaveBeenCalledWith('SimpleError');
@@ -355,21 +355,16 @@ describe('Resolve', () => {
     }
   });
 
-  test.skip('fails with resolution error', async () => {
-    const res = new AsyncOk(Promise.reject());
+  test('fails with resolution error', async () => {
+    const res = new AsyncOk(Promise.reject('sd'));
 
     const spy = jest.fn();
     const spyErr = jest.fn();
 
-    const r = await res
-      .map(spy)
-      .mapErr(spyErr)
-      .resolve();
+    await res.map(spy).mapErr(spyErr).resolve();
 
-      console.log(r);
-
-      expect(spyErr).toHaveBeenCalledWith('ResolutionError');
-      expect(spy).not.toHaveBeenCalled();
+    expect(spyErr).toHaveBeenCalledWith('ResolutionError');
+    expect(spy).not.toHaveBeenCalled();
   });
 });
 
@@ -431,12 +426,10 @@ describe('AsyncErr', () => {
     await delay();
     expect(spy).toHaveBeenCalledWith('SimpleError');
   });
-  
+
   test('it adds the default Resolution Error', async () => {
     const res = new AsyncErr<'SimpleError' | 'AnotherError'>(
-      (Math.random() < 1)
-        ? 'SimpleError'
-        : 'AnotherError'
+      Math.random() < 1 ? 'SimpleError' : 'AnotherError'
     );
 
     res.mapErr((e) => {
@@ -463,17 +456,12 @@ describe('AsyncResultWrapper', () => {
 
 describe('AsyncResult.all', () => {
   test('it works with multiple ok results', async () => {
-    const allResult = AsyncResult.all(
-      new AsyncOk(2),
-      new AsyncOk('a string')
-    );
+    const allResult = AsyncResult.all(new AsyncOk(2), new AsyncOk('a string'));
 
     const spy = jest.fn();
 
-    await allResult
-      .map(spy)
-      .resolve();
-    
+    await allResult.map(spy).resolve();
+
     expect(spy).toHaveBeenCalledWith([2, 'a string']);
   });
 
@@ -487,11 +475,8 @@ describe('AsyncResult.all', () => {
     const spyErr = jest.fn();
     const spy = jest.fn();
 
-    await allResult
-      .mapErr(spyErr)
-      .map(spy)
-      .resolve();
-    
+    await allResult.mapErr(spyErr).map(spy).resolve();
+
     expect(spy).not.toHaveBeenCalled();
     expect(spyErr).toHaveBeenCalledWith('SimpleError');
   });
