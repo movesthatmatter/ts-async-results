@@ -53,7 +53,7 @@ export class AsyncResultWrapper<T, E> {
 
       const newRes = mapper(r.val);
 
-      if (newRes instanceof AsyncResultWrapper) {
+      if (AsyncResult.isAsyncResult(newRes)) {
         return newRes.result;
       }
 

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "conditional-type-checks": "^1.0.5",
-    "ts-results": "3.0.0"
+    "ts-results": "^3.0.0"
   },
   "devDependencies": {
     "jest": "^26.6.3",
