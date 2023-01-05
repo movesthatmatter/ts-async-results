@@ -1,6 +1,6 @@
 {
   "name": "ts-async-results",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "An Async implementation of the awesome github.com/vultix/ts-results.",
   "repository": {
     "type": "git",
