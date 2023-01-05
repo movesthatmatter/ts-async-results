@@ -20,7 +20,8 @@ export class AsyncResultWrapper<T, E> {
   ) {
     this.result = Promise.resolve(
       typeof result === 'function' ? result() : result
-    );
+    ) // A Promise without a catch statement throws an error nowadays and doesn't resolve
+      .catch(() => new Err(resolutionError) as any);
   }
 
   resolve(): Promise<Result<T, E>> {
@@ -88,12 +89,7 @@ export class AsyncOk<T> extends AsyncResultWrapper<T, never> {
   static readonly EMPTY = new AsyncOk<void>(undefined);
 
   constructor(resolver: T | Promise<T>) {
-    super(
-      Promise.resolve(resolver)
-        .then((val) => new Ok(val))
-        // A Promise without a catch statement throws an error nowadays
-        .catch(() => new Err(resolutionError) as any)
-    );
+    super(Promise.resolve(resolver).then((val) => new Ok(val)));
   }
 }
 

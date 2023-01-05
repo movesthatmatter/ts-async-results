@@ -355,8 +355,20 @@ describe('Resolve', () => {
     }
   });
 
-  test('fails with resolution error', async () => {
-    const res = new AsyncOk(Promise.reject('sd'));
+  test('fails with resolution error on AsyncOk', async () => {
+    const res = new AsyncOk(Promise.reject('any error'));
+
+    const spy = jest.fn();
+    const spyErr = jest.fn();
+
+    await res.map(spy).mapErr(spyErr).resolve();
+
+    expect(spyErr).toHaveBeenCalledWith('ResolutionError');
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  test('fails with resolution error on AsyncErr', async () => {
+    const res = new AsyncErr(Promise.reject('any error'));
 
     const spy = jest.fn();
     const spyErr = jest.fn();
