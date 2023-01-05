@@ -3369,7 +3369,7 @@ ts-jest@^26.4.4:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-results@^3.0.0:
+ts-results@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ts-results/-/ts-results-3.0.0.tgz#f28fc4c6ac0e94fc3af4ea08be42617e169a7ff5"
   integrity sha512-Txxbn48H4cOMC0v38FMwRJD/uVs/1AoWvfVj0Lqngv6YGvmOibANoLOoa+1mP5G4InGxSvbfZyZyxS9DIWfU3g==
