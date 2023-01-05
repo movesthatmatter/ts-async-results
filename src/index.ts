@@ -91,6 +91,7 @@ export class AsyncOk<T> extends AsyncResultWrapper<T, never> {
     super(
       Promise.resolve(resolver)
         .then((val) => new Ok(val))
+        // A Promise without a catch statement throws an error nowadays
         .catch(() => new Err(resolutionError) as any)
     );
   }
