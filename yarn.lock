@@ -3369,10 +3369,10 @@ ts-jest@^26.4.4:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-results@3.2:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/ts-results/-/ts-results-3.2.1.tgz#8adf05d20b0d4c268412dc402d7249f4cc87e4cc"
-  integrity sha512-cMvWPLvxM39fSQgSHRT2d+dwQfpK+ttfj5FpPuXum9m/pm6iDmgsirpWXp/3/ErmZqx1x+rAhJi/33NQqCCM3Q==
+ts-results@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/ts-results/-/ts-results-3.3.0.tgz#68623a6c18e65556287222dab76498a28154922f"
+  integrity sha512-FWqxGX2NHp5oCyaMd96o2y2uMQmSu8Dey6kvyuFdRJ2AzfmWo3kWa4UsPlCGlfQ/qu03m09ZZtppMoY8EMHuiA==
 
 tslib@^2.4.1:
   version "2.4.1"

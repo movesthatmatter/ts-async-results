@@ -163,3 +163,7 @@ export namespace AsyncResult {
     return isObject(t) && keyInObject(t, 'isAsync') && t.isAsync === true;
   }
 }
+
+
+// Export the ts-results as well
+export { Result, Ok, Err } from 'ts-results';
