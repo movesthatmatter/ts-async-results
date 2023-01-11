@@ -1,4 +1,4 @@
-import { Err, Ok } from 'ts-results';
+import { Err, Ok } from './result';
 import { AsyncOk, AsyncErr, AsyncResultWrapper, AsyncResult } from './index';
 import { delay, isExactType } from './util';
 

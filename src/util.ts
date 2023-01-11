@@ -20,3 +20,13 @@ export const traceAsyncErrors = async <T>(fn: () => Promise<T>) => {
     throw error;
   }
 };
+
+export function toString(val: unknown): string {
+  let value = String(val);
+  if (value === '[object Object]') {
+      try {
+          value = JSON.stringify(val);
+      } catch {}
+  }
+  return value;
+}
