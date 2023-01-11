@@ -1,4 +1,4 @@
-import { Result, Ok, Err } from './result';
+import { Result, Ok, Err } from './result/result';
 import { traceAsyncErrors } from './util';
 
 const resolutionError = 'ResolutionError';
@@ -165,4 +165,4 @@ export namespace AsyncResult {
 }
 
 // Export the ts-results as well
-export { Result, Ok, Err } from './result';
+export { Result, Ok, Err } from './result/result';

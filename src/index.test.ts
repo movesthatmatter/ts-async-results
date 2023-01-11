@@ -1,4 +1,4 @@
-import { Err, Ok } from './result';
+import { Err, Ok } from './result/result';
 import { AsyncOk, AsyncErr, AsyncResultWrapper, AsyncResult } from './index';
 import { delay, isExactType } from './util';
 
