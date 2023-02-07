@@ -9,17 +9,25 @@ This library only addresses the Async component of the Result.
 
 ## Contents
 
-* [Installation](#installation)
-* [Usage](#usage)
-    * [Creation](#creation)
-    * [Map, MapErr](#map-and-maperr)
-    * [Unwrap](#unwrap)
-    * [Expect](#expect)
-    * [UnwrapOr](#unwrapor)
-    * [Empty](#empty)
-    * [Combining Results](#combining-results)
-        * [Result.all](#result-all)
-        * [Result.any](#result-any)
+- [ts-async-results](#ts-async-results)
+  - [LOOKING FOR CONTRIBUTORS](#looking-for-contributors)
+  - [Contents](#contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+      - [Creation](#creation)
+      - [Map and MapErr](#map-and-maperr)
+      - [Flatmap](#flatmap)
+      - [FlatMapErr](#flatmaperr)
+      - [Expect](#expect)
+      - [Empty](#empty)
+      - [Resolve](#resolve)
+      - [Unwrap](#unwrap)
+      - [UnwrapOr](#unwrapor)
+      - [ResolveUnwrap](#resolveunwrap)
+      - [ResolveUnwrapOr](#resolveunwrapor)
+      - [Combining Results](#combining-results)
+        - [AsyncResult.all](#asyncresultall)
+        - [AsyncResult.any](#asyncresultany)
 
 ## Installation
 ```bash
@@ -142,6 +150,58 @@ getResourceAsyncResultWithRetry()
     });
 ```
 
+#### Expect
+
+To use `Expect` we make use of the fact that an AsyncResult resolves to a simple Result.
+
+```typescript
+let goodAsyncResult = new AsyncOk(1);
+let badAsyncResult = new AsyncErr("something went wrong");
+
+let goodResult = (await goodAsyncResult.resolve());
+let badResult = (await goodAsyncResult.resolve());
+
+goodResult.expect('goodResult should be a number'); // 1
+badResult.expect('badResult should be a number'); // throws Error("badResult should be a number - Error: something went wrong")
+```
+
+#### Empty
+```typescript
+function checkIsValid(isValid: boolean): AsyncResult<void, Error> {
+    if (isValid) {
+        return AsyncOk.EMPTY;
+    } else {
+        return new AsyncErr("Not valid");
+    }
+}
+```
+
+#### Resolve
+
+Calling `myAsyncResult.resolve()` transforms it into a Promise<Result<T, E>>
+
+**Ok Path**
+
+```typescript
+let asyncResult = new AsyncOk(1);
+
+let result = (await goodAsyncResult.resolve());
+
+console.log(result.val); // 1
+```
+
+**Error Path**
+
+*Note: Calling `resolve()` does NOT throw when the value is an Error. See [ResolveUnwrap](#resolveUnwrap) if you need that behavior*
+
+```typescript
+let asyncResult = new AsyncErr('SimpleErr');
+
+let result = (await goodAsyncResult.resolve());
+
+console.log(result.val); // SimpleErr
+```
+
 #### Unwrap
 
 To use `Unwrap` we make use of the fact that an AsyncResult resolves to a simple Result.
@@ -175,31 +235,30 @@ goodResult.unwrapOr(5); // 1
 badResult.unwrapOr(5); // 5
 ```
 
-#### Expect
+#### ResolveUnwrap
 
-To use `Expect` we make use of the fact that an AsyncResult resolves to a simple Result.
+Combines [Resolve](#resolve) and [Unwrap](#unwrap) functionalities.
 
 ```typescript
 let goodAsyncResult = new AsyncOk(1);
+console.log(await goodAsyncResult.resolveUnwrap()); // 1
+
 let badAsyncResult = new AsyncErr("something went wrong");
-
-let goodResult = (await goodAsyncResult.resolve());
-let badResult = (await goodAsyncResult.resolve());
-
-goodResult.expect('goodResult should be a number'); // 1
-badResult.expect('badResult should be a number'); // throws Error("badResult should be a number - Error: something went wrong")
+console.log(await badAsyncResult.resolveUnwrap()); // throws Error("something went wrong")
 ```
 
-#### Empty
+#### ResolveUnwrapOr
+
+Similar to "ResolveUnwrap" but provides a fallback for the Error path. The Ok path remains unaffected!
+
 ```typescript
-function checkIsValid(isValid: boolean): AsyncResult<void, Error> {
-    if (isValid) {
-        return AsyncOk.EMPTY;
-    } else {
-        return new AsyncErr("Not valid");
-    }
-}
+let goodAsyncResult = new AsyncOk(1);
+console.log(await goodAsyncResult.resolveUnwrapor(5)); // 1
+
+let badAsyncResult = new AsyncErr("something went wrong");
+console.log(await badAsyncResult.resolveUnwrapOr(5)); // 5
 ```
+
 
 #### Combining Results
 `ts-async-results` has one helper function for operating over n `Result` objects.
