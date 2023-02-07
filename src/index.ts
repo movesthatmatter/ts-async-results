@@ -27,6 +27,26 @@ export class AsyncResultWrapper<T, E> {
     return this.result;
   }
 
+  async resolveUnwrap(): Promise<T> {
+    const r = await this.resolve();
+
+    if (r.ok) {
+      return r.val;
+    }
+
+    throw r.val;
+  }
+
+  async resolveUnwrapOr<F>(fallback: F): Promise<T | F> {
+    try {
+      const r = await this.resolveUnwrap();
+
+      return r;
+    } catch {
+      return fallback;
+    }
+  }
+
   map<T2>(mapper: (val: T) => T2): AsyncResultWrapper<T2, E> {
     const mapped: Promise<Result<T2, E>> = this.result.then((r) =>
       r.ok ? new Ok(mapper(r.val)) : r

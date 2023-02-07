@@ -495,3 +495,61 @@ describe('AsyncResult.all', () => {
     expect(spyErr).toHaveBeenCalledWith('SimpleError');
   });
 });
+
+describe('ResolveUnwrap', () => {
+  test('works with OkResult and sync resolver', async () => {
+    const res = new AsyncResultWrapper(new Ok(2));
+
+    const val = await res.resolveUnwrap();
+
+    expect(val).toBe(2);
+    isExactType<typeof val, number>(true);
+  });
+
+  test('works with OkResult and async resolver', async () => {
+    const res = new AsyncResultWrapper(
+      Promise.resolve(new Ok({ from: 'a promise' }))
+    );
+
+    const val = await res.resolveUnwrap();
+
+    expect(val).toEqual({ from: 'a promise' });
+    isExactType<typeof val, { from: string }>(true);
+  });
+
+  test('works with ErrResult and sync resolver', async () => {
+    try {
+      const res = new AsyncResultWrapper(new Err('SimpleError'));
+      await res.resolveUnwrap();
+    } catch (actual) {
+      expect(actual).toBe('SimpleError');
+    }
+  });
+
+  test('works with ErrResult and async resolver', async () => {
+    try {
+      const res = new AsyncResultWrapper(
+        Promise.resolve(new Err('AsyncError'))
+      );
+      await res.resolveUnwrap();
+    } catch (actual) {
+      expect(actual).toBe('AsyncError');
+    }
+  });
+});
+
+describe('UnwrapOr', () => {
+  test('Ok Path', async () => {
+    const res = new AsyncResultWrapper(Promise.resolve(new Ok('All Good')));
+    const val = await res.resolveUnwrapOr(5);
+
+    expect(val).toBe('All Good');
+  });
+
+  test('Err Path', async () => {
+    const res = new AsyncResultWrapper(Promise.resolve(new Err('AsyncError')));
+    const val = await res.resolveUnwrapOr(5);
+
+    expect(val).toBe(5);
+  });
+});
