@@ -1,3 +1,9 @@
+---
+noteId: "812719b0dae611ed8027d54c437e9bae"
+tags: []
+
+---
+
 # ts-async-results
 An Async implementation of the awesome [ts-results](https://github.com/vultix/ts-results).
 
