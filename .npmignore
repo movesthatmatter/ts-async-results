@@ -1,6 +1,8 @@
 tsconfig.json
 tsconfig.tests.json
-jest.config.json
+jest.config.js
 src
 coverage
 .vscode
+yarn-error.log
+.notebook
