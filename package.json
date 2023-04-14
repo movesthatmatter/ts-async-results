@@ -2,6 +2,13 @@
   "name": "ts-async-results",
   "version": "0.7.2",
   "description": "An Async implementation of the awesome github.com/vultix/ts-results.",
+  "keywords": [
+    "rust",
+    "async",
+    "ts-results",
+    "rust-results",
+    "typed results"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/movesthatmatter/ts-async-results"
