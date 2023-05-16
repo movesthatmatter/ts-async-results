@@ -570,6 +570,62 @@ describe('Wrapper', () => {
     expect(actual.ok).toBe(false);
     expect(actual.val).toEqual('test-error');
   });
+
+  test('Works with AsyncResult.AsyncOk coming from a function', async () => {
+    const res = new AsyncResultWrapper(() => new AsyncOk(2));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncOk coming from a function', async () => {
+    const res = new AsyncResultWrapper(() => new AsyncErr('test-err'));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(false);
+    expect(actual.val).toEqual('test-err');
+  });
+
+  test('Works with AsyncResult.AsyncOk coming from an async function', async () => {
+    const res = new AsyncResultWrapper(async () => {
+      await delay(5);
+
+      return new AsyncOk(2);
+    });
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncErr coming from an async function', async () => {
+    const res = new AsyncResultWrapper(async () => {
+      await delay(5);
+
+      return new AsyncErr('test-err');
+    });
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(false);
+    expect(actual.val).toEqual('test-err');
+  });
+
+  test('Works with AsyncResult.AsyncOk coming from a promise', async () => {
+    const res = new AsyncResultWrapper(() => Promise.resolve(new AsyncOk(2)));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncErr coming from a promise', async () => {
+    const res = new AsyncResultWrapper(() => Promise.resolve(AsyncErr.EMPTY));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(false);
+    expect(actual.val).toEqual(undefined);
+  });
 });
 
 describe('AsyncResult.toAsyncResult', () => {
@@ -588,4 +644,33 @@ describe('AsyncResult.toAsyncResult', () => {
     expect(actual.ok).toBe(false);
     expect(actual.val).toEqual('test-error');
   });
+
+  test('Works with AsyncResult.AsyncOk coming from a function', async () => {
+    const res = AsyncResult.toAsyncResult(() => new AsyncOk(2));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncOk coming from an async function', async () => {
+    const res = AsyncResult.toAsyncResult(async () => {
+      await delay(5);
+
+      return new AsyncOk(2);
+    });
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncOk coming from a promise', async () => {
+    const res = AsyncResult.toAsyncResult(() => Promise.resolve(new AsyncOk(2)));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
 });

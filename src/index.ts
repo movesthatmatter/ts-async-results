@@ -16,9 +16,11 @@ export class AsyncResultWrapper<T, E> {
       | Result<T, E>
       | AsyncResult<T, E>
       | Promise<Result<T, E>>
+      // | Promise<AsyncResult<T, E>> // TODO: This could be a good use case too but it breaks other code for now
       | (() => Result<T, E>)
       | (() => AsyncResult<T, E>)
       | (() => Promise<Result<T, E>>)
+      | (() => Promise<AsyncResult<T, E>>)
   ) {
     this.result = Promise.resolve(
       typeof result === 'function' ? result() : result
@@ -164,6 +166,7 @@ export namespace AsyncResult {
       | (() => Promise<Result<T, E>>)
       | (() => Result<T, E>)
       | (() => AsyncResult<T, E>)
+      | (() => Promise<AsyncResult<T, E>>)
   ) {
     return new AsyncResultWrapper<T, E>(result);
   }

@@ -15,6 +15,7 @@ This library only addresses the Async component of the Result.
   - [Installation](#installation)
   - [Usage](#usage)
       - [Creation](#creation)
+      - [Wrap other Result or Async Result](#wrap-other-result-or-async-result)
       - [Map and MapErr](#map-and-maperr)
       - [Flatmap](#flatmap)
       - [FlatMapErr](#flatmaperr)
@@ -51,6 +52,38 @@ let okResult2 = AsyncOk<number, Error>(10); // Exact same as above
 let errorResult: AsyncResult<number, Error> = new AsyncOk(new Error('bad number!'));
 let errorResult2 = new AsyncOk<number, Error>(new Error('bad number!')); // Exact same as above
 
+```
+
+#### Wrap other Result or Async Result
+```typescript
+
+// From Result
+new AsyncResultWrapper(new Ok(10));
+
+// From Result Function
+new AsyncResultWrapper(() => new Ok(10));
+
+// From Result Async Function
+let okFromResultAsyncFn = new AsyncResultWrapper(async () => {
+    await delay(1);
+
+    return new Ok(10)
+});
+
+// From Async
+new AsyncResultWrapper(new AsyncOk(10));
+
+// From Async Result Function
+new AsyncResultWrapper(() => new AsyncOk(10));
+
+// From Async Result Async Function :)
+new AsyncResultWrapper(async () => {
+    await delay(1);
+
+    return new AsyncOk(10)
+});
+
+// Works in the same way with AsyncErr or the alias AsyncReult.toAsyncResult()
 ```
 
 #### Map and MapErr
