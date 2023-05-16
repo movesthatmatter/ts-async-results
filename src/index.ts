@@ -14,13 +14,17 @@ export class AsyncResultWrapper<T, E> {
   constructor(
     result:
       | Result<T, E>
+      | AsyncResult<T, E>
       | Promise<Result<T, E>>
-      | (() => Promise<Result<T, E>>)
       | (() => Result<T, E>)
+      | (() => AsyncResult<T, E>)
+      | (() => Promise<Result<T, E>>)
   ) {
     this.result = Promise.resolve(
       typeof result === 'function' ? result() : result
-    );
+    )
+      // Resolve it if it's an AsyncResult
+      .then((r) => (AsyncResult.isAsyncResult(r) ? r.resolve() : r));
   }
 
   resolve(): Promise<Result<T, E>> {
@@ -156,8 +160,10 @@ export namespace AsyncResult {
     result:
       | Result<T, E>
       | Promise<Result<T, E>>
+      | AsyncResult<T, E>
       | (() => Promise<Result<T, E>>)
       | (() => Result<T, E>)
+      | (() => AsyncResult<T, E>)
   ) {
     return new AsyncResultWrapper<T, E>(result);
   }

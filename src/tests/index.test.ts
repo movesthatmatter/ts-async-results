@@ -553,3 +553,39 @@ describe('UnwrapOr', () => {
     expect(val).toBe(5);
   });
 });
+
+describe('Wrapper', () => {
+  test('Works with AsyncResult.AsyncOk', async () => {
+    const res = new AsyncResultWrapper(new AsyncOk(2));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncErr', async () => {
+    const res = new AsyncResultWrapper(new AsyncErr('test-error'));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(false);
+    expect(actual.val).toEqual('test-error');
+  });
+});
+
+describe('AsyncResult.toAsyncResult', () => {
+  test('Works with AsyncResult.AsyncOk', async () => {
+    const res = AsyncResult.toAsyncResult(new AsyncOk(2));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(true);
+    expect(actual.val).toEqual(2);
+  });
+
+  test('Works with AsyncResult.AsyncErr', async () => {
+    const res = AsyncResult.toAsyncResult(new AsyncErr('test-error'));
+    const actual = await res.resolve();
+
+    expect(actual.ok).toBe(false);
+    expect(actual.val).toEqual('test-error');
+  });
+});
