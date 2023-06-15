@@ -26,11 +26,22 @@ export class AsyncResultWrapper<T, E> {
       typeof result === 'function' ? result() : result
     )
       // Resolve it if it's an AsyncResult
-      .then((r) => (AsyncResult.isAsyncResult(r) ? r.resolve() : r));
+      .then((r) => (AsyncResult.isAsyncResult(r) ? r.resolve() : r))
+      .catch((e) => {
+        console.error('AsyncResultWrapper Constructor Error', e);
+
+        throw e;
+      });
   }
 
-  resolve(): Promise<Result<T, E>> {
-    return this.result;
+  async resolve(): Promise<Result<T, E>> {
+    try {
+      return this.result;
+    } catch (e) {
+      console.error('AsyncResultWrapper ResolveError', e);
+
+      throw e;
+    }
   }
 
   async resolveUnwrap(): Promise<T> {
